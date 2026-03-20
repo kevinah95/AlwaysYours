@@ -3,6 +3,10 @@
 version: "3"
 
 tasks:
+  spotless:setup:
+    desc: Set up spotless to automatically format code on git pre-push
+    cmds:
+      - ./gradlew spotlessInstallGitPrePushHook
   spotless:apply:
     desc: Run spotless to apply code formatting
     cmds:
