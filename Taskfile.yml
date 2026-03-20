@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+tasks:
+  spotless:apply:
+    desc: Run spotless to apply code formatting
+    cmds:
+      - ./gradlew spotlessApply

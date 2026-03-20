@@ -1,56 +1,59 @@
+/*
+ * Copyright 2026 kevinah95 (Kevin A. Hernández Rostrán)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidMultiplatformLibrary)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
+  alias(libs.plugins.kotlinMultiplatform)
+  alias(libs.plugins.androidMultiplatformLibrary)
+  alias(libs.plugins.composeMultiplatform)
+  alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
-    jvmToolchain(21)
+  jvmToolchain(21)
 
-    android {
-        namespace = "io.github.kevinah95.alwaysyours.library"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
+  android {
+    namespace = "io.github.kevinah95.alwaysyours.library"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
+    compilerOptions { jvmTarget.set(JvmTarget.JVM_11) }
 
-        androidResources {
-            enable = true
-        }
+    androidResources { enable = true }
+  }
+
+  listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
+    iosTarget.binaries.framework {
+      baseName = "ComposeApp"
+      isStatic = true
     }
+  }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
+  sourceSets {
+    commonMain.dependencies {
+      implementation(libs.compose.runtime)
+      implementation(libs.compose.foundation)
+      implementation(libs.compose.material3)
+      implementation(libs.compose.ui)
+      implementation(libs.compose.components.resources)
+      implementation(libs.compose.uiToolingPreview)
+      implementation(libs.androidx.lifecycle.viewmodelCompose)
+      implementation(libs.androidx.lifecycle.runtimeCompose)
     }
-    
-    sourceSets {
-        commonMain.dependencies {
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
-    }
+    commonTest.dependencies { implementation(libs.kotlin.test) }
+  }
 }
 
-dependencies {
-    androidRuntimeClasspath(libs.compose.uiTooling)
-}
-
+dependencies { androidRuntimeClasspath(libs.compose.uiTooling) }
