@@ -17,12 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
 
 import alwaysyours.composeapp.generated.resources.Res
+import alwaysyours.composeapp.generated.resources.allStringResources
 import alwaysyours.composeapp.generated.resources.compose_multiplatform
+import alwaysyours.composeapp.generated.resources.poem
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    AlwaysYoursTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
@@ -44,6 +47,8 @@ fun App() {
                     Text("Compose: $greeting")
                 }
             }
+            // Put this italic
+            Text(stringResource(Res.string.poem), style = MaterialTheme.typography.bodyLarge, fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
         }
     }
 }
